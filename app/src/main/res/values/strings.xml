@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Registration Certificate</string>
+    <string name="name_surname">%s %s</string>
+    <string name="form_name_hint">Name:</string>
+    <string name="form_surname_hint">Surname:</string>
+    <string name="form_stay_address_hint">Stay address in:</string>
+    <string name="form_date_in_hint">Date of registration:</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+</resources>
