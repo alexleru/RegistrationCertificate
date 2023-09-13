@@ -14,9 +14,19 @@
         tools:listitem="@layout/item_of_document" />
 
     <ProgressBar
-        android:id="@+id/list_progressbar"
+        android:id="@+id/list_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_add"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:fabSize="normal"
+        android:contentDescription="@string/create_new_form_of_document" />
 
 </FrameLayout>

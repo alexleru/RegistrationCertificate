@@ -24,9 +24,6 @@ import rs.alexleru.registrationcertificate.presentation.viewmodel.ListOfDocument
 import javax.inject.Inject
 
 class ListOfDocumentsFragment : Fragment() {
-
-    lateinit var listOfDocumentsAdapter: ListOfDocumentsAdapter
-
     @Inject
     lateinit var mockDataForDB: MockDataForDB //TODO удалить
 
@@ -40,6 +37,11 @@ class ListOfDocumentsFragment : Fragment() {
     private val binding: FragmentListOfDocumentsBinding
         get() = _binding ?: throw RuntimeException("Not found FragmentListOfDocumentsBinding")
 
+
+    private val listOfDocumentsAdapter by lazy {
+        ListOfDocumentsAdapter { launchFormFragmentEditItem(it) }
+    }
+
     override fun onAttach(context: Context) {
         (requireActivity().application as RegCertApp).component.inject(this)
         super.onAttach(context)
@@ -49,7 +51,6 @@ class ListOfDocumentsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentListOfDocumentsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -61,8 +62,8 @@ class ListOfDocumentsFragment : Fragment() {
     }
 
     private fun view() {
-        listOfDocumentsAdapter = ListOfDocumentsAdapter{launchFormFragmentEditItem(it)}
         binding.rvListOfDocuments.adapter = listOfDocumentsAdapter
+        binding.floatingButton.setOnClickListener { launchFormFragmentAddItem() }
     }
 
     private fun observer() {
@@ -70,14 +71,13 @@ class ListOfDocumentsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.listState.collect {
                     when (it) {
-                        is ListState.Loading -> binding.listProgressbar.isVisible = true
+                        is ListState.Loading -> binding.listProgressBar.isVisible = true
                         is ListState.Content -> {
-                            binding.listProgressbar.isVisible = false
+                            binding.listProgressBar.isVisible = false
                             listOfDocumentsAdapter.submitList(it.listOfDocuments)
                         }
-
                         is ListState.Error -> {
-                            binding.listProgressbar.isVisible = false
+                            binding.listProgressBar.isVisible = false
                             Toast.makeText(
                                 this@ListOfDocumentsFragment.context,
                                 "Ошибка", // Todo
@@ -85,14 +85,12 @@ class ListOfDocumentsFragment : Fragment() {
                             ).show()
                         }
                     }
-
                 }
-
             }
         }
     }
 
-    private fun launchFormFragmentAddItem() {
+    private fun launchFormFragmentAddItem() { //TODO все ли actions должны проходить через viewmodel? https://github.com/romychab/android-tutorials/blob/main/mvvm-navigation/app/src/main/java/ua/cn/stu/mvvmnavigation/screens/hello/HelloFragment.kt
         parentFragmentManager.beginTransaction()
             .replace(R.id.main_activity, FormOfDocumentFragment.newInstanceAddItem())
             .addToBackStack(null)

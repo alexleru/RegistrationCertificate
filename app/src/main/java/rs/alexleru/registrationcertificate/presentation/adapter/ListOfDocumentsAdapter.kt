@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import rs.alexleru.registrationcertificate.databinding.ItemOfDocumentBinding
 import rs.alexleru.registrationcertificate.domain.model.Document
-import javax.inject.Inject
 
-class ListOfDocumentsAdapter @Inject constructor(private val onClickItemListener: (Long) -> Unit)
-    : ListAdapter<Document, ListOfDocumentsViewHolder>(ListOfDocumentsDiffUtils) {
+class ListOfDocumentsAdapter(private val onClickItemListener: (Long) -> Unit) :
+    ListAdapter<Document, ListOfDocumentsViewHolder>(ListOfDocumentsDiffUtils) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListOfDocumentsViewHolder {
         val binding =

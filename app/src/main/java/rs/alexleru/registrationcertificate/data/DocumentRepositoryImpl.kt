@@ -8,7 +8,6 @@ import rs.alexleru.registrationcertificate.data.mapper.toDB
 import rs.alexleru.registrationcertificate.data.mapper.toDomain
 import rs.alexleru.registrationcertificate.domain.DocumentRepository
 import rs.alexleru.registrationcertificate.domain.model.Document
-import java.util.UUID
 import javax.inject.Inject
 
 class DocumentRepositoryImpl @Inject constructor(
@@ -18,24 +17,27 @@ class DocumentRepositoryImpl @Inject constructor(
 
     override fun getListOfDocuments(): Flow<List<Document>> {
         return flow {
-            delay(3000) //TODO удалить!!!
-            val listOfDocument =
-                documentDao.getListOfDocument().map { it.toDomain() }.toList()
-            emit(listOfDocument)
+            delay(1000) //TODO удалить!!!
+            documentDao.getListOfDocument().collect {
+                this@flow.emit(it.map { doc -> doc.toDomain() }.toList())
+            }
         }
 
     }
 
-    override fun getDocument(documentId: Long): Document {
+    override suspend fun getDocument(documentId: Long): Document {
+
+        delay(1000)//TODO удалить!!!
+
         return documentDao.getDocument(documentId = documentId).toDomain()
     }
 
-    override fun addDocument(document: Document) {
+    override suspend fun addDocument(document: Document) {
         val documentModelDB = document.toDB()
         documentDao.addDocument(document = documentModelDB)
     }
 
-    override fun deleteDocument(documentId: Long) {
+    override suspend fun deleteDocument(documentId: Long) {
         documentDao.deleteDocument(documentId = documentId)
     }
 }

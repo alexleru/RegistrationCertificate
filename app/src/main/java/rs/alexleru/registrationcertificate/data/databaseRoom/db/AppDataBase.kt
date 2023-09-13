@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import rs.alexleru.registrationcertificate.data.databaseRoom.model.DocumentModelDB
 
-@Database(entities = [DocumentModelDB::class], version = 1, exportSchema = false)
+@Database(entities = [DocumentModelDB::class], version = 4, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentDao
@@ -25,8 +25,7 @@ abstract class AppDataBase : RoomDatabase() {
                     context,
                     AppDataBase::class.java,
                     DBNAME
-                )
-                    .allowMainThreadQueries() //TODO remove
+                ).fallbackToDestructiveMigration()
                     .build()
 
                 db = instance

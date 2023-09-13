@@ -4,50 +4,49 @@ import rs.alexleru.registrationcertificate.data.databaseRoom.model.DocumentModel
 import rs.alexleru.registrationcertificate.domain.model.Document
 
 //class DocumentMapper {
+//TODO вместо класса сделать файл с расш.функциями?
+fun DocumentModelDB.toDomain() = Document(
+    id = this.id,
+    surname = this.surname,
+    name = this.name,
+    dateOfBirth = this.dateOfBirth?.toCalendar(),
+    sex = this.sex,
+    placeOfBirthday = this.placeOfBirthday,
+    nationality = this.nationality,
+    typeOfDocument = this.typeOfDocument,
+    numberOfDocument = this.numberOfDocument,
+    typeOfVisa = this.typeOfVisa,
+    numberOfVisa = this.numberOfVisa,
+    placeOfVisa = this.placeOfVisa,
+    dateIn = this.dateIn?.toCalendar(),
+    entryInto = this.entryInto,
+    addressStay = this.addressStay,
+    nameOfHost = this.nameOfHost,
+    numberIdOfHost = this.numberIdOfHost,
+    dateOfRegistration = this.dateOfRegistration.toCalendar(),
+    note = this.note
+)
 
-    fun DocumentModelDB.toDomain() = Document(
-        id = this.id,
-        creationDateTime = this.creationDateTime,
-        lastChangeDateTime = this.lastChangeDateTime,
-        surname = this.surname,
-        name = this.name,
-        dateOfBirth = this.dateOfBirth,
-        sex = this.sex,
-        placeOfBirthday = this.placeOfBirthday,
-        typeOfDocument = this.typeOfDocument,
-        numberOfDocument = this.numberOfDocument,
-        typeOfVisa = this.typeOfVisa,
-        numberOfVisa = this.numberOfVisa,
-        placeOfVisa = this.placeOfVisa,
-        dateIn = this.dateIn,
-        entryInto = this.entryInto,
-        addressStay = this.addressStay,
-        nameOfHost = this.nameOfHost,
-        numberIdOfHost = this.numberIdOfHost,
-        dateOfRegistration = this.dateOfRegistration,
-        note = this.note
-    )
+fun Document.toDB() = DocumentModelDB(
+    id = this.id,
+    surname = this.surname,
+    name = this.name,
+    dateOfBirth = this.dateOfBirth?.toLong(),
+    sex = this.sex,
+    placeOfBirthday = this.placeOfBirthday,
+    nationality = this.nationality,
+    typeOfDocument = this.typeOfDocument,
+    numberOfDocument = this.numberOfDocument,
+    typeOfVisa = this.typeOfVisa,
+    numberOfVisa = this.numberOfVisa,
+    placeOfVisa = this.placeOfVisa,
+    dateIn = this.dateIn?.toLong(),
+    entryInto = this.entryInto,
+    addressStay = this.addressStay,
+    nameOfHost = this.nameOfHost,
+    numberIdOfHost = this.numberIdOfHost,
+    dateOfRegistration = this.dateOfRegistration.toLong(),
+    note = this.note
+)
 
-    fun Document.toDB() = DocumentModelDB(
-        id = this.id,
-        creationDateTime = this.creationDateTime,
-        lastChangeDateTime = this.lastChangeDateTime,
-        surname = this.surname,
-        name = this.name,
-        dateOfBirth = this.dateOfBirth,
-        sex = this.sex,
-        placeOfBirthday = this.placeOfBirthday,
-        typeOfDocument = this.typeOfDocument,
-        numberOfDocument = this.numberOfDocument,
-        typeOfVisa = this.typeOfVisa,
-        numberOfVisa = this.numberOfVisa,
-        placeOfVisa = this.placeOfVisa,
-        dateIn = this.dateIn,
-        entryInto = this.entryInto,
-        addressStay = this.addressStay,
-        nameOfHost = this.nameOfHost,
-        numberIdOfHost = this.numberIdOfHost,
-        dateOfRegistration = this.dateOfRegistration,
-        note = this.note
-    )
 //}

@@ -1,4 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
     <style name="Base.Theme.RegistrationCertificate" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
@@ -28,8 +29,15 @@
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
     </style>
 
-    <style name="ButtonSave" parent="@style/Widget.MaterialComponents.Button.TextButton.Icon">
-    </style>
+    <style name="ButtonSave" parent="@style/Widget.MaterialComponents.Button.TextButton.Icon"></style>
 
     <style name="Theme.RegistrationCertificate" parent="Base.Theme.RegistrationCertificate" />
+
+    <style name="MySpinnerDatePickerStyle" parent="android:Theme.Material.Dialog">
+        <item name="android:datePickerStyle">@style/MySpinnerDatePicker</item>
+    </style>
+
+    <style name="MySpinnerDatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
 </resources>

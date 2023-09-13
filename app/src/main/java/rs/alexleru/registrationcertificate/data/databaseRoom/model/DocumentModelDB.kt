@@ -2,19 +2,17 @@ package rs.alexleru.registrationcertificate.data.databaseRoom.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.UUID
 
 @Entity(tableName = "document")
 data class DocumentModelDB(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val creationDateTime: Long,
-    val lastChangeDateTime: Long,
     val surname: String,
     val name: String,
     val dateOfBirth: Long? = null,
     val sex: Char? = null,
     val placeOfBirthday: String? = null,
+    val nationality: String? = null,
     val typeOfDocument: String? = null,
     val numberOfDocument: String? = null,
     val typeOfVisa: String? = null,

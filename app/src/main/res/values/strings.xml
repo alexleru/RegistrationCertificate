@@ -1,10 +1,28 @@
 <resources>
     <string name="app_name">Registration Certificate</string>
     <string name="name_surname">%s %s</string>
+
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+
     <string name="form_name_hint">Name:</string>
     <string name="form_surname_hint">Surname:</string>
     <string name="form_stay_address_hint">Stay address in:</string>
-    <string name="form_date_in_hint">Date of registration:</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
+    <string name="form_date_registration_hint">Date of registration:</string>
+    <string name="form_date_birthday_hint">Date of birth:</string>
+    <string name="form_sex_hint">Sex:</string>
+    <string name="form_place_birth_hint">Place and country of birth:</string>
+    <string name="form_nationality_hint">Nationality:</string>
+    <string name="form_type_document_hint">Type of travel document or ID:</string>
+    <string name="form_number_document_hint">Number of travel document or ID:</string>
+    <string name="form_date_entry_hint">Date of entry</string>
+    <string name="form_place_entry_hint">Place of entry</string>
+    <string name="form_name_host_hint">Surname, given name of landlord/name of legal entity</string>
+    <string name="form_id_host_hint">identification number/tax ID of landlord</string>
+    <string name="create_new_form_of_document">Create new Form of Document</string>
+
+    <string-array name="sex_list">
+        <item>male</item>
+        <item>female</item>
+    </string-array>
 </resources>
