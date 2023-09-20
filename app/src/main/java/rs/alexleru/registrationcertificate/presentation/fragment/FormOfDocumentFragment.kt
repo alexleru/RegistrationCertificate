@@ -254,7 +254,7 @@ class FormOfDocumentFragment : Fragment() {
         private const val ARG_MODE_ADD = "mode_add"
         private const val ARG_MODE_EDIT = "mode_edit"
 
-        fun newInstanceAddItem() = FormOfDocumentFragment().apply {
+        fun newInstanceNewItem() = FormOfDocumentFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, ARG_MODE_ADD)
             }

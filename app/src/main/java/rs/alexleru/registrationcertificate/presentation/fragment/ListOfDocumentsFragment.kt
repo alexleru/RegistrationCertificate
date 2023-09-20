@@ -17,6 +17,10 @@ import rs.alexleru.registrationcertificate.R
 import rs.alexleru.registrationcertificate.RegCertApp
 import rs.alexleru.registrationcertificate.data.MockDataForDB
 import rs.alexleru.registrationcertificate.databinding.FragmentListOfDocumentsBinding
+import rs.alexleru.registrationcertificate.pdfCreator.PdfConstructor
+import rs.alexleru.registrationcertificate.pdfCreator.form.MockData
+import rs.alexleru.registrationcertificate.pdfCreator.form.RegistrationOfPlaceOfStay
+import rs.alexleru.registrationcertificate.pdfCreator.util.toPDF
 import rs.alexleru.registrationcertificate.presentation.adapter.ListOfDocumentsAdapter
 import rs.alexleru.registrationcertificate.presentation.state.ListState
 import rs.alexleru.registrationcertificate.presentation.viewmodel.DocumentViewModelProvider
@@ -59,12 +63,45 @@ class ListOfDocumentsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view()
         observer()
+        PdfConstructor(
+            RegistrationOfPlaceOfStay(MockData().mock().toPDF()),
+            requireContext()
+        ).apply {
+            this.savePdf()
+        }
     }
 
     private fun view() {
         binding.rvListOfDocuments.adapter = listOfDocumentsAdapter
-        binding.floatingButton.setOnClickListener { launchFormFragmentAddItem() }
+        binding.floatingButton.setOnClickListener {
+            launchFormFragmentNewItem()
+        }
     }
+
+
+//    // Storage Permissions
+//    val REQUEST_EXTERNAL_STORAGE = 1
+//    val PERMISSIONS_STORAGE = arrayOf(
+//        Manifest.permission.READ_EXTERNAL_STORAGE,
+//        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//        Manifest.permission.MANAGE_EXTERNAL_STORAGE
+//    )
+//
+//    fun verifyStoragePermissions(activity: Activity) {
+//        // Check if we have write permission
+//        val permission = ActivityCompat.checkSelfPermission(
+//            activity,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        );
+//
+//        if (permission != PackageManager.PERMISSION_GRANTED) {
+//            // We don't have permission so prompt the user
+//            ActivityCompat.requestPermissions(
+//                activity, PERMISSIONS_STORAGE,
+//                REQUEST_EXTERNAL_STORAGE
+//            );
+//        }
+//    }
 
     private fun observer() {
         lifecycleScope.launch {
@@ -76,6 +113,7 @@ class ListOfDocumentsFragment : Fragment() {
                             binding.listProgressBar.isVisible = false
                             listOfDocumentsAdapter.submitList(it.listOfDocuments)
                         }
+
                         is ListState.Error -> {
                             binding.listProgressBar.isVisible = false
                             Toast.makeText(
@@ -90,9 +128,9 @@ class ListOfDocumentsFragment : Fragment() {
         }
     }
 
-    private fun launchFormFragmentAddItem() { //TODO все ли actions должны проходить через viewmodel? https://github.com/romychab/android-tutorials/blob/main/mvvm-navigation/app/src/main/java/ua/cn/stu/mvvmnavigation/screens/hello/HelloFragment.kt
+    private fun launchFormFragmentNewItem() {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.main_activity, FormOfDocumentFragment.newInstanceAddItem())
+            .replace(R.id.main_activity, FormOfDocumentFragment.newInstanceNewItem())
             .addToBackStack(null)
             .commit()
     }

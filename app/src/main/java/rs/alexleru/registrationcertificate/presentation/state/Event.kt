@@ -1,4 +1,4 @@
-package rs.alexleru.registrationcertificate.presentation
+package rs.alexleru.registrationcertificate.presentation.state
 
 class Event<T>(data: T) {
 

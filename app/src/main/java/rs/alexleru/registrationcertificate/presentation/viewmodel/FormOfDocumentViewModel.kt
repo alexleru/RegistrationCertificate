@@ -11,7 +11,7 @@ import rs.alexleru.registrationcertificate.domain.model.Document
 import rs.alexleru.registrationcertificate.domain.usecase.AddDocumentUseCase
 import rs.alexleru.registrationcertificate.domain.usecase.DeleteDocumentUseCase
 import rs.alexleru.registrationcertificate.domain.usecase.GetDocumentUseCase
-import rs.alexleru.registrationcertificate.presentation.Event
+import rs.alexleru.registrationcertificate.presentation.state.Event
 import rs.alexleru.registrationcertificate.presentation.state.FormAction
 import rs.alexleru.registrationcertificate.presentation.state.FormEvent
 import rs.alexleru.registrationcertificate.presentation.state.FormState

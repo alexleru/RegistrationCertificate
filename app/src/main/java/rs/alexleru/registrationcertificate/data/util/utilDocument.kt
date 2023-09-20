@@ -1,10 +1,8 @@
-package rs.alexleru.registrationcertificate.data.mapper
+package rs.alexleru.registrationcertificate.data.util
 
 import rs.alexleru.registrationcertificate.data.databaseRoom.model.DocumentModelDB
 import rs.alexleru.registrationcertificate.domain.model.Document
 
-//class DocumentMapper {
-//TODO вместо класса сделать файл с расш.функциями?
 fun DocumentModelDB.toDomain() = Document(
     id = this.id,
     surname = this.surname,
@@ -48,5 +46,3 @@ fun Document.toDB() = DocumentModelDB(
     dateOfRegistration = this.dateOfRegistration.toLong(),
     note = this.note
 )
-
-//}

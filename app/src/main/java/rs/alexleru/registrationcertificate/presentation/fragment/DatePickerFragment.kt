@@ -7,15 +7,16 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import rs.alexleru.registrationcertificate.R
 import java.util.Calendar
+import kotlin.properties.Delegates
 
 class DatePickerFragment(
-    private val currentValueCalendar: Calendar?,
-    private val viewId: Int,
-    private val returnValue: (Calendar, Int) -> Unit //int - viewId
+
 ) : DialogFragment(),
     DatePickerDialog.OnDateSetListener {
 
-
+    private var currentValueCalendar: Calendar? = null
+    private var viewId by Delegates.notNull<Int>()//TODO is it ok?
+    private lateinit var returnValue: (Calendar, Int) -> Unit //int - viewId
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = currentValueCalendar ?: Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -44,7 +45,11 @@ class DatePickerFragment(
             viewId: Int,
             returnValue: (Calendar, Int) -> Unit
         ): DatePickerFragment {
-            return DatePickerFragment(calendar, viewId, returnValue)
+            return DatePickerFragment().apply {
+                this.currentValueCalendar = calendar
+                this.viewId = viewId
+                this.returnValue = returnValue
+            }
         }
     }
 }

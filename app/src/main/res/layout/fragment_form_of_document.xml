@@ -111,7 +111,8 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="false"
-                    android:hint="@string/form_date_birthday_hint" />
+                    android:hint="@string/form_date_birthday_hint"
+                    android:typeface="sans" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

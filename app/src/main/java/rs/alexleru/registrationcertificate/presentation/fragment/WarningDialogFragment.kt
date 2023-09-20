@@ -5,8 +5,8 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
-class WarningDialogFragment(private val onDialogClick: (Int) -> Unit) : DialogFragment() {
-
+class WarningDialogFragment : DialogFragment() {
+    private lateinit var onDialogClick: (Int) -> Unit //TODO lateinit?
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val alertDialog: AlertDialog = activity?.let {
@@ -30,6 +30,8 @@ class WarningDialogFragment(private val onDialogClick: (Int) -> Unit) : DialogFr
 
     companion object {
 
-        fun newInstance(onDialogClick: (Int) -> Unit) = WarningDialogFragment(onDialogClick)
+        fun newInstance(onDialogClick: (Int) -> Unit) = WarningDialogFragment().apply {
+            this.onDialogClick = onDialogClick
+        }
     }
 }

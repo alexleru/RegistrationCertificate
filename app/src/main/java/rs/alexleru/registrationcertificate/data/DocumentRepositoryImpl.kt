@@ -4,8 +4,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import rs.alexleru.registrationcertificate.data.databaseRoom.db.DocumentDao
-import rs.alexleru.registrationcertificate.data.mapper.toDB
-import rs.alexleru.registrationcertificate.data.mapper.toDomain
+import rs.alexleru.registrationcertificate.data.util.toDB
+import rs.alexleru.registrationcertificate.data.util.toDomain
 import rs.alexleru.registrationcertificate.domain.DocumentRepository
 import rs.alexleru.registrationcertificate.domain.model.Document
 import javax.inject.Inject
