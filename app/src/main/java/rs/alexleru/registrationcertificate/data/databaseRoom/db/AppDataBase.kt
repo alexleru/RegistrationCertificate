@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import rs.alexleru.registrationcertificate.data.databaseRoom.model.DocumentModelDB
 
-@Database(entities = [DocumentModelDB::class], version = 4, exportSchema = false)
+@Database(entities = [DocumentModelDB::class], version = 7, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentDao

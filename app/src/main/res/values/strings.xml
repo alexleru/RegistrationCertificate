@@ -18,8 +18,19 @@
     <string name="form_date_entry_hint">Date of entry</string>
     <string name="form_place_entry_hint">Place of entry</string>
     <string name="form_name_host_hint">Surname, given name of landlord/name of legal entity</string>
-    <string name="form_id_host_hint">identification number/tax ID of landlord</string>
+    <string name="form_id_host_hint">Identification number/tax ID of landlord</string>
     <string name="create_new_form_of_document">Create new Form of Document</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="sex_male">Sex - male</string>
+    <string name="sex_female">Sex - female</string>
+    <string name="male_for_form">MUŠKI (MALE)</string>
+    <string name="female_for_form">ŽENSKI (FEMALE)</string>
+    <string name="save_button_warn_dialog">Save</string>
+    <string name="discard_button_warn_dialog">Discard</string>
+    <string name="cancel_button_warn_dialog">Cancel</string>
+    <string name="message_warn_dialog">You have made changes. Do you want to discard or save them?</string>
+    <string name="field_can_t_be_empty">Field can\'t be empty</string>
 
     <string-array name="sex_list">
         <item>male</item>

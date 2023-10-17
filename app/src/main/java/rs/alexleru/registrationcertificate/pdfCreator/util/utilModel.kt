@@ -9,13 +9,13 @@ import java.util.Locale
 fun DocumentModelDB.toPDF() = DocumentModelPdf(
     surname = this.surname,
     name = this.name,
-    dateOfBirth = this.dateOfBirth?.toStr() ?: "",
+    dateOfBirth = this.dateOfBirth.toStr(),
     sex = this.sex.toString(),
     placeOfBirth = this.placeOfBirthday ?: "",
-    nationality = this.nationality  ?: "",
-    typeOfDocument = this.typeOfDocument  ?: "",
-    numberOfDocument = this.numberOfDocument  ?: "",
-    dateIn = this.dateIn?.toStr()  ?: "",
+    nationality = this.nationality ?: "",
+    typeOfDocument = this.typeOfDocument ?: "",
+    numberOfDocument = this.numberOfDocument ?: "",
+    dateIn = this.dateIn.toStr(),
     entryInto = this.entryInto ?: "",
     addressStay = this.addressStay,
     nameOfHost = this.nameOfHost ?: "",
@@ -23,9 +23,12 @@ fun DocumentModelDB.toPDF() = DocumentModelPdf(
     dateOfRegistration = this.dateOfRegistration.toStr()
 )
 
-internal fun Long.toStr(): String {
+internal fun Long?.toStr(): String {
+    this?.let {
         val calendar = Calendar.getInstance().apply { timeInMillis = this@toStr }
         val format = SimpleDateFormat("dd.MM.yyyy", Locale.ROOT)
         return format.format(calendar.time)
+    }
+    return ""
 }
 

@@ -1,25 +1,23 @@
 package rs.alexleru.registrationcertificate.domain.model
 
-import java.util.Calendar
-
 data class Document(
-    val id: Long = 0,
+    val id: Long = UNDEFINED_ID,
     val surname: String = "",
     val name: String = "",
-    val dateOfBirth: Calendar? = null,
-    val sex: Char? = null,
+    val dateOfBirth: String? = null,
+    val sex: String? = null,
     val placeOfBirthday: String? = null,
     val nationality: String? = null,
     val typeOfDocument: String? = null,
     val numberOfDocument: String? = null,
-    val typeOfVisa: String? = null,
-    val numberOfVisa: String? = null,
-    val placeOfVisa: String? = null,
-    val dateIn: Calendar? = null,
+    val dateIn: String? = null,
     val entryInto: String? = null,
-    val addressStay: String,
-    val nameOfHost: String?,
+    val addressStay: String = "",
+    val nameOfHost: String? = null,
     val numberIdOfHost: String? = null,
-    val dateOfRegistration: Calendar = Calendar.getInstance(),
-    val note: String? = null
-)
+    val dateOfRegistration: String = ""
+) {
+    companion object{
+        private const val UNDEFINED_ID = 0L
+    }
+}

@@ -6,4 +6,5 @@ sealed class FormEvent {
     object Close: FormEvent()
     object WarningDialog: FormEvent()
     data class DatePickerDialog(val calendar: Calendar?, val viewId: Int): FormEvent()
+    object ChooseSexDialog: FormEvent()
 }

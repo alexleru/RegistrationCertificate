@@ -18,7 +18,7 @@ class ListOfDocumentsViewHolder(
             val nameSurnameTemplates = context.resources.getString(R.string.name_surname)
             name.text = String.format(nameSurnameTemplates, document.surname, document.name)
             address.text = document.addressStay
-            regDate.text = document.dateOfRegistration.toStr()
+            regDate.text = document.dateOfRegistration
             root.setOnClickListener {
                 onClickItemListener.invoke(document.id)
             }

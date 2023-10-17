@@ -4,22 +4,24 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import rs.alexleru.registrationcertificate.R
 
 class WarningDialogFragment : DialogFragment() {
+
     private lateinit var onDialogClick: (Int) -> Unit //TODO lateinit?
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val alertDialog: AlertDialog = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setMessage("You have made changes. Do you want to discard or save them?") //TODO to string res
-                setPositiveButton("Save") { _, which -> //TODO to string res
+                setMessage(getString(R.string.message_warn_dialog))
+                setPositiveButton(getString(R.string.save_button_warn_dialog)) { _, which ->
                     onDialogClick(which)
                 }
-                setNegativeButton("Discard") { _, which -> //TODO to string res
+                setNegativeButton(getString(R.string.discard_button_warn_dialog)) { _, which ->
                     onDialogClick(which)
                 }
-                setNeutralButton("Cancel") { dialog, _ -> //TODO to string res
+                setNeutralButton(getString(R.string.cancel_button_warn_dialog)) { dialog, _ ->
                     dialog.cancel()
                 }
             }

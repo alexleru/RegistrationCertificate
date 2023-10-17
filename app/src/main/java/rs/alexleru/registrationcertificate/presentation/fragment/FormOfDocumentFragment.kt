@@ -2,26 +2,29 @@ package rs.alexleru.registrationcertificate.presentation.fragment
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
+import rs.alexleru.registrationcertificate.R
 import rs.alexleru.registrationcertificate.RegCertApp
 import rs.alexleru.registrationcertificate.databinding.FragmentFormOfDocumentBinding
 import rs.alexleru.registrationcertificate.domain.model.Document
 import rs.alexleru.registrationcertificate.presentation.mapper.toCalendar
 import rs.alexleru.registrationcertificate.presentation.mapper.toStr
+import rs.alexleru.registrationcertificate.presentation.model.ErrorFields
 import rs.alexleru.registrationcertificate.presentation.state.FormAction
 import rs.alexleru.registrationcertificate.presentation.state.FormEvent
-import rs.alexleru.registrationcertificate.presentation.state.FormState
 import rs.alexleru.registrationcertificate.presentation.viewmodel.DocumentViewModelProvider
 import rs.alexleru.registrationcertificate.presentation.viewmodel.FormOfDocumentViewModel
 import java.util.Calendar
@@ -55,46 +58,38 @@ class FormOfDocumentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observerEvent()
+        launchState()
         onClickView()
+        onTextEdit()
+        observerEvent()
     }
 
     private fun parseArg() {
         val argMode = requireArguments().getString(ARG_MODE)
         when (argMode) {
-            ARG_MODE_ADD -> launchAddMode()
+            ARG_MODE_ADD -> viewModel.newDocument()
             ARG_MODE_EDIT -> {
                 val argDocumentId = requireArguments().getLong(ARG_ID)
                 viewModel.setDocument(argDocumentId)
-                launchEditMode()
             }
 
             else -> throw RuntimeException("Unknown args in FormOfDocumentFragment")
         }
     }
 
-    private fun launchAddMode() {
-    }
-
-    private fun launchEditMode() {
+    private fun launchState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.formState.collect {
-                    when (it) {
-                        is FormState.Loading -> binding.formProgressBar.isVisible = true
-                        is FormState.Content -> {
-                            fillDataToFields(it.document)
-                            binding.formProgressBar.isVisible = false
-                        }
-
-                        is FormState.Error -> {
-                            Toast.makeText(
-                                context,
-                                "Ошибка", //TODO change
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.formProgressBar.isVisible = false
-                        }
+                    binding.formProgressBar.isVisible = it.isRefreshing
+                    it.content?.let { value -> fillDataToFields(value) }
+                    fillErrorToFields(it.errorContent)
+                    it.error?.let {
+                        Toast.makeText(
+                            context,
+                            "Ошибка", //TODO change
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -125,8 +120,11 @@ class FormOfDocumentFragment : Fragment() {
                 viewModel.handleAction(FormAction.Save(getDataFromFields()))
             }
 
+            editFormSex.setOnClickListener {
+                viewModel.handleAction(FormAction.ShowChooseSexDialog)
+            }
 
-            textFormDateBirthday.setOnClickListener {
+            editFormDateBirthday.setOnClickListener {
                 onClickForShowPickerDialog(it)
             }
             editFormDateEntry.setOnClickListener {
@@ -134,6 +132,51 @@ class FormOfDocumentFragment : Fragment() {
             }
             editFormDateRegistration.setOnClickListener {
                 onClickForShowPickerDialog(it)
+            }
+        }
+    }
+
+    private fun onTextEdit() {
+        with(binding) {
+            editFormName.doOnTextChanged { str, _, _, _ ->
+                if (str != null && str.trim().isNotBlank()) {
+                    viewModel.handleAction(
+                        FormAction.ResetErrorField(
+                            FormAction.RESET_ERROR_NAME,
+                            getDataFromFields()
+                        )
+                    )
+                }
+            }
+            editFormSurname.doOnTextChanged { str, _, _, _ ->
+                if (str != null && str.trim().isNotBlank()) {
+                    viewModel.handleAction(
+                        FormAction.ResetErrorField(
+                            FormAction.RESET_ERROR_SURNAME,
+                            getDataFromFields()
+                        )
+                    )
+                }
+            }
+            editFormStayAddress.doOnTextChanged { str, _, _, _ ->
+                if (str != null && str.trim().isNotBlank()) {
+                    viewModel.handleAction(
+                        FormAction.ResetErrorField(
+                            FormAction.RESET_ERROR_ADDRESS,
+                            getDataFromFields()
+                        )
+                    )
+                }
+            }
+            editFormDateRegistration.doOnTextChanged { str, _, _, _ ->
+                if (str != null && str.trim().isNotBlank()) {
+                    viewModel.handleAction(
+                        FormAction.ResetErrorField(
+                            FormAction.RESET_ERROR_REG_DATE,
+                            getDataFromFields()
+                        )
+                    )
+                }
             }
         }
     }
@@ -152,30 +195,62 @@ class FormOfDocumentFragment : Fragment() {
             is FormEvent.Close -> toBack()
             is FormEvent.DatePickerDialog ->
                 showDatePicker(event.calendar, event.viewId)
+
             is FormEvent.WarningDialog -> showWarningDialog()
+            is FormEvent.ChooseSexDialog -> showChooseSexDialog()
         }
     }
 
     private fun fillDataToFields(document: Document) {
         with(binding) {
-            editFormName.setText(document.name)
-            editFormSurname.setText(document.surname)
+            with(document) {
+                editFormName.setText(name)
+                editFormSurname.setText(surname)
 
-            textFormDateBirthday.setText(document.dateOfBirth?.toStr())
+                editFormDateBirthday.setText(dateOfBirth)
 
-            editFormSex.setText(document.sex.toString()) //TODO use map Enum
-            editFormPlaceBirth.setText(document.placeOfBirthday)
-            editFormNationality.setText(document.nationality)
-            editFormTypeDocument.setText(document.typeOfDocument)
-            editFormNumberDocument.setText(document.numberOfDocument)
+                editFormSex.setText(sex)
+                editFormPlaceBirth.setText(placeOfBirthday)
+                editFormNationality.setText(nationality)
+                editFormTypeDocument.setText(typeOfDocument)
+                editFormNumberDocument.setText(numberOfDocument)
 
-            editFormDateEntry.setText(document.dateIn?.toStr())
-            editFormPlaceEntry.setText(document.entryInto) //TODO use vocabulary
+                editFormDateEntry.setText(dateIn)
+                editFormPlaceEntry.setText(entryInto) //TODO use vocabulary
 
-            editFormStayAddress.setText(document.addressStay)
-            editFormNameHost.setText(document.nameOfHost)
-            editFormIdHost.setText(document.numberIdOfHost)
-            editFormDateRegistration.setText(document.dateOfRegistration.toStr())
+                editFormStayAddress.setText(addressStay)
+                editFormNameHost.setText(nameOfHost)
+                editFormIdHost.setText(numberIdOfHost)
+                editFormDateRegistration.setText(dateOfRegistration)
+            }
+        }
+    }
+
+    private fun checkForErrorFields(field: Boolean): String? {
+        val message = if (field) {
+            getString(R.string.field_can_t_be_empty)
+        } else {
+            null
+        }
+        return message
+    }
+
+    private fun fillErrorToFields(errorFields: ErrorFields) {
+        Log.d("fillErrorToFields++++", "$errorFields")
+        with(errorFields) {
+            with(binding) {
+                textFormName.error = checkForErrorFields(name)
+                textFormName.isErrorEnabled = name
+
+                textFormSurname.error = checkForErrorFields(surname)
+                textFormSurname.isErrorEnabled = surname
+
+                textFormStayAddress.error = checkForErrorFields(addressStay)
+                textFormStayAddress.isErrorEnabled = addressStay
+
+                textFormDateRegistration.error = checkForErrorFields(dateOfRegistration)
+                textFormDateRegistration.isErrorEnabled = dateOfRegistration
+            }
         }
     }
 
@@ -184,33 +259,31 @@ class FormOfDocumentFragment : Fragment() {
             name = binding.editFormName.text.toString(),
             surname = binding.editFormSurname.text.toString(),
 
-            dateOfBirth = binding.textFormDateBirthday.text.toString().toCalendar(),
-            sex = 'M', //TODO use map Enum
+            dateOfBirth = binding.editFormDateBirthday.text.toString(),
+            sex = binding.editFormSex.text.toString(),
             placeOfBirthday = binding.editFormPlaceBirth.text.toString(),
             nationality = binding.editFormNationality.text.toString(),
             typeOfDocument = binding.editFormTypeDocument.text.toString(),
             numberOfDocument = binding.editFormNumberDocument.text.toString(),
 
-            dateIn = binding.editFormDateEntry.text.toString().toCalendar(),
+            dateIn = binding.editFormDateEntry.text.toString(),
             entryInto = binding.editFormPlaceEntry.text.toString(), //TODO use vocabulary
 
             addressStay = binding.editFormStayAddress.text.toString(),
             nameOfHost = binding.editFormNameHost.text.toString(),
             numberIdOfHost = binding.editFormIdHost.text.toString(),
             dateOfRegistration = binding.editFormDateRegistration.text.toString()
-                .toCalendar()!! //TODO Change !!
         )
 
     private fun showDatePicker(calendar: Calendar?, viewId: Int) {
         DatePickerFragment.newInstance(calendar, viewId) { c, v -> setCalendarToView(c, v) }
             .show(parentFragmentManager, null)
-        binding.textFormDateBirthday.id
     }
 
     private fun setCalendarToView(calendar: Calendar, viewId: Int) {
         with(binding) {
             when (viewId) {
-                textFormDateBirthday.id -> textFormDateBirthday.setText(calendar.toStr())
+                editFormDateBirthday.id -> editFormDateBirthday.setText(calendar.toStr())
                 editFormDateEntry.id -> editFormDateEntry.setText(calendar.toStr())
                 editFormDateRegistration.id -> editFormDateRegistration.setText(calendar.toStr())
                 else -> throw RuntimeException("Not found relation view ID")
@@ -221,6 +294,18 @@ class FormOfDocumentFragment : Fragment() {
     private fun showWarningDialog() {
         WarningDialogFragment.newInstance { getResultFromWarningDialog(it) }
             .show(parentFragmentManager, null)
+    }
+
+    private fun showChooseSexDialog() {
+        ChooseSexDialogFragment.newInstance { getResultFromChooseSexDialog(it) }
+            .show(parentFragmentManager, null)
+    }
+
+    private fun getResultFromChooseSexDialog(result: String) {
+        when (result) {
+            ChooseSexDialogFragment.ARG_MALE -> binding.editFormSex.setText(getString(R.string.male_for_form))
+            ChooseSexDialogFragment.ARG_FEMALE -> binding.editFormSex.setText(getString(R.string.female_for_form))
+        }
     }
 
     private fun getResultFromWarningDialog(result: Int) {

@@ -7,9 +7,9 @@ import rs.alexleru.registrationcertificate.data.databaseRoom.db.DocumentDao
 import rs.alexleru.registrationcertificate.data.databaseRoom.model.DocumentModelDB
 import javax.inject.Inject
 
-class MockDataForDB @Inject constructor(documentDao: DocumentDao) {
+class MockDataForDB @Inject constructor(private val documentDao: DocumentDao) {
 
-    init {
+    fun mock() {
         val documentModelDB = DocumentModelDB(
             id = 0,
             name = "Hi",
@@ -22,21 +22,17 @@ class MockDataForDB @Inject constructor(documentDao: DocumentDao) {
             surname = "Petrov",
             name = "Ivan",
             dateOfBirth = 0,
-            sex = 'M',
+            sex = "M",
             placeOfBirthday = "Piter, Russia",
             nationality = "Russian",
             typeOfDocument = "Passport",
             numberOfDocument = "99 999999",
-            typeOfVisa = null,
-            numberOfVisa = null,
-            placeOfVisa = null,
             dateIn = 0,
             entryInto = "Airport",
-            addressStay = "Kutuzovka",
+            addressStay = "Profesora Mihala Filipa 50, Stara Pazova 22300",
             nameOfHost = "Danil Bagrov",
             numberIdOfHost = "11111111111111",
             dateOfRegistration = 0,
-            note = null
         )
 
         val scope = CoroutineScope(Dispatchers.IO)

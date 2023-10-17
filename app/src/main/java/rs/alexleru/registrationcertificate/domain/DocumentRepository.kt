@@ -12,4 +12,6 @@ interface DocumentRepository {
     suspend fun addDocument(document: Document)
 
     suspend fun deleteDocument(documentId: Long)
+
+
 }

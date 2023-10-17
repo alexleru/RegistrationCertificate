@@ -14,21 +14,16 @@ class DocumentRepositoryImpl @Inject constructor(
     private val documentDao: DocumentDao,
 ) : DocumentRepository {
 
-
     override fun getListOfDocuments(): Flow<List<Document>> {
         return flow {
-            delay(1000) //TODO удалить!!!
             documentDao.getListOfDocument().collect {
                 this@flow.emit(it.map { doc -> doc.toDomain() }.toList())
             }
         }
-
     }
 
     override suspend fun getDocument(documentId: Long): Document {
-
-        delay(1000)//TODO удалить!!!
-
+        delay(1000) //TODO remove
         return documentDao.getDocument(documentId = documentId).toDomain()
     }
 

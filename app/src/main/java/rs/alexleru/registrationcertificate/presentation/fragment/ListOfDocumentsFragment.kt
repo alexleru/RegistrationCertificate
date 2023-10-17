@@ -28,6 +28,7 @@ import rs.alexleru.registrationcertificate.presentation.viewmodel.ListOfDocument
 import javax.inject.Inject
 
 class ListOfDocumentsFragment : Fragment() {
+
     @Inject
     lateinit var mockDataForDB: MockDataForDB //TODO удалить
 
@@ -63,12 +64,15 @@ class ListOfDocumentsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view()
         observer()
-        PdfConstructor(
-            RegistrationOfPlaceOfStay(MockData().mock().toPDF()),
-            requireContext()
-        ).apply {
-            this.savePdf()
+        binding.forTest.setOnClickListener {
+            mockDataForDB.mock()
         }
+//        PdfConstructor(
+//            RegistrationOfPlaceOfStay(MockData().mock().toPDF()),
+//            requireContext()
+//        ).apply {
+//            this.savePdf()
+//        }
     }
 
     private fun view() {
@@ -108,14 +112,19 @@ class ListOfDocumentsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.listState.collect {
                     when (it) {
-                        is ListState.Loading -> binding.listProgressBar.isVisible = true
+                        is ListState.Loading -> {
+                            binding.listProgressBar.isVisible = true
+                            binding.floatingButton.isClickable = false
+                        }
                         is ListState.Content -> {
                             binding.listProgressBar.isVisible = false
+                            binding.floatingButton.isClickable = true
                             listOfDocumentsAdapter.submitList(it.listOfDocuments)
                         }
 
                         is ListState.Error -> {
                             binding.listProgressBar.isVisible = false
+                            binding.floatingButton.isClickable = false
                             Toast.makeText(
                                 this@ListOfDocumentsFragment.context,
                                 "Ошибка", // Todo

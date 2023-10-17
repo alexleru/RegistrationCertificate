@@ -9,22 +9,19 @@ class MockData {
             id = 0,
             surname = "Petrov",
             name = "Ivan",
-            dateOfBirth = 0,
-            sex = 'M',
+            dateOfBirth = 12,
+            sex = "l",
             placeOfBirthday = "Piter, Russia",
             nationality = "Russian",
             typeOfDocument = "Passport",
             numberOfDocument = "99 999999",
-            typeOfVisa = null,
-            numberOfVisa = null,
-            placeOfVisa = null,
-            dateIn = 0,
+            dateIn = 122,
             entryInto = "Airport",
-            addressStay = "Kutuzovka",
+            addressStay = "Profesora Mihala Filipa 50, Stara Pazova 22300",
             nameOfHost = "Danil Bagrov",
             numberIdOfHost = "11111111111111",
-            dateOfRegistration = 0,
-            note = null
+            dateOfRegistration = 122,
+
         )
     }
 }
